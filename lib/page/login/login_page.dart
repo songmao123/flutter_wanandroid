@@ -1,14 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/page/login/register_page.dart';
+import 'package:flutter_wanandroid/page/splash/splash_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AbstractLoginPage extends StatelessWidget {
-  final String _assetBgImage;
-
-  AbstractLoginPage(this._assetBgImage);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,7 @@ abstract class AbstractLoginPage extends StatelessWidget {
   Widget _loginBodyWidget(BuildContext context) {
     return Stack(
       children: <Widget>[
-        _backgroundWidget(),
+        LoginBackgroundWidget(),
         _closeWidget(context),
         buildContent(context),
       ],
@@ -59,32 +58,59 @@ abstract class AbstractLoginPage extends StatelessWidget {
     );
   }
 
-  Widget _backgroundWidget() {
+  @protected
+  Widget buildContent(BuildContext context);
+}
+
+class LoginBackgroundWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginBackgroundState();
+}
+
+class _LoginBackgroundState extends State<LoginBackgroundWidget> {
+  String _imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _getBackgroundImageIndex().then((index) {
+      setState(() {
+        _imageUrl = SPLASH_ARRAY[index];
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage(_assetBgImage),
-        ),
-      ),
+      decoration: _imageUrl == null
+          ? null
+          : BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(_imageUrl),
+              ),
+            ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+            ),
           ),
         ),
       ),
     );
   }
 
-  @protected
-  Widget buildContent(BuildContext context);
+  Future<int> _getBackgroundImageIndex() async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('background_image_index');
+  }
 }
 
 class LoginPage extends AbstractLoginPage {
-  LoginPage(String assetBgImage) : super(assetBgImage);
-
   @override
   Widget buildContent(BuildContext context) {
     return Column(
@@ -116,7 +142,7 @@ class LoginPage extends AbstractLoginPage {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RegisterPage(_assetBgImage),
+              builder: (context) => RegisterPage(),
             ),
           );
         },

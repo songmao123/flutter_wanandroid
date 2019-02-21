@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/page/login/login_page.dart';
 
 class RegisterPage extends AbstractLoginPage {
-  RegisterPage(String assetBgImage) : super(assetBgImage);
 
   @override
   Widget buildContent(BuildContext context) {

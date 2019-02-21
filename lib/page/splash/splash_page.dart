@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/page/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const int COUNTDOWN_TIME = 5;
 const SPLASH_ARRAY = <String>[
@@ -46,6 +48,7 @@ class SplashTimerState extends State<SplashTimerWidget>
 
   @override
   void initState() {
+    _saveBgImageIndex();
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       print('Timer tick: ${timer.tick}');
       var value = COUNTDOWN_TIME - timer.tick;
@@ -55,7 +58,6 @@ class SplashTimerState extends State<SplashTimerWidget>
         });
       } else {
         _startLoginPage();
-        _stopCountTimer();
       }
     });
     super.initState();
@@ -103,11 +105,17 @@ class SplashTimerState extends State<SplashTimerWidget>
   }
 
   void _startLoginPage() {
+    _stopCountTimer();
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(SPLASH_ARRAY[widget._splashIndex]),
+        builder: (context) => LoginPage(),
       ),
     );
+  }
+
+  void _saveBgImageIndex() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('background_image_index', widget._splashIndex);
   }
 }
