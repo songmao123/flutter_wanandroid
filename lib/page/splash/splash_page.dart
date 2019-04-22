@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/page/login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const int COUNTDOWN_TIME = 5;
+const int COUNTDOWN_TIME = 3;
 const SPLASH_ARRAY = <String>[
   'assets/images/splash01.jpg',
   'assets/images/splash02.jpg',
@@ -15,36 +14,20 @@ const SPLASH_ARRAY = <String>[
   'assets/images/splash05.jpg'
 ];
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   final _splashIndex = Random().nextInt(5);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: SplashTimerWidget(_splashIndex),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(SPLASH_ARRAY[_splashIndex]),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
+  State<StatefulWidget> createState() {
+    return _SplashPageState(_splashIndex);
   }
 }
 
-class SplashTimerWidget extends StatefulWidget {
-  final _splashIndex;
-
-  SplashTimerWidget(this._splashIndex);
-
-  @override
-  State<StatefulWidget> createState() => SplashTimerState();
-}
-
-class SplashTimerState extends State<SplashTimerWidget>
-    with SingleTickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage> {
   Timer _timer;
   int _countDownValue = COUNTDOWN_TIME;
+
+  _SplashPageState(int splashIndex);
 
   @override
   void initState() {
@@ -64,18 +47,21 @@ class SplashTimerState extends State<SplashTimerWidget>
   }
 
   @override
-  void dispose() {
-    _stopCountTimer();
-    super.dispose();
-  }
-
-  void _stopCountTimer() {
-    _timer?.cancel();
-    _timer = null;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: _content(),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(SPLASH_ARRAY[widget._splashIndex]),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _content() {
     return Align(
       alignment: Alignment.topRight,
       child: Container(
@@ -104,14 +90,24 @@ class SplashTimerState extends State<SplashTimerWidget>
     );
   }
 
+  @override
+  void dispose() {
+    _stopCountTimer();
+    super.dispose();
+  }
+
+  void _stopCountTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
   void _startLoginPage() {
     _stopCountTimer();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ));
   }
 
   void _saveBgImageIndex() async {

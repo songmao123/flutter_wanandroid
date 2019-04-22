@@ -24,6 +24,11 @@ class RegisterPage extends AbstractLoginPage {
       ),
     );
   }
+
+  @override
+  void onCloseClick(BuildContext context) {
+    Navigator.of(context).pop();
+  }
 }
 
 class RegisterAreaWidget extends StatefulWidget {

@@ -40,7 +40,7 @@ abstract class AbstractLoginPage extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            onCloseClick(context);
           },
           splashColor: Colors.white30,
           highlightColor: Colors.black12,
@@ -60,6 +60,9 @@ abstract class AbstractLoginPage extends StatelessWidget {
 
   @protected
   Widget buildContent(BuildContext context);
+
+  @protected
+  void onCloseClick(BuildContext context);
 }
 
 class LoginBackgroundWidget extends StatefulWidget {
@@ -111,6 +114,7 @@ class _LoginBackgroundState extends State<LoginBackgroundWidget> {
 }
 
 class LoginPage extends AbstractLoginPage {
+
   @override
   Widget buildContent(BuildContext context) {
     return Column(
@@ -166,6 +170,11 @@ class LoginPage extends AbstractLoginPage {
         ),
       ),
     );
+  }
+
+  @override
+  void onCloseClick(BuildContext context) {
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
   }
 }
 
