@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/page/splash/splash_page.dart';
+import 'package:flutter_wanandroid/page/ui/home/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -21,7 +21,7 @@ class WanApp extends StatelessWidget {
         backgroundColor: Colors.grey[200],
       ),
       home: Scaffold(
-        body: SplashPage(),
+        body: MainPage(),
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/page/login/login_page.dart';
+import 'package:flutter_wanandroid/page/ui/login/login_page.dart';
 
 class RegisterPage extends AbstractLoginPage {
-
   @override
   Widget buildContent(BuildContext context) {
     return Column(
@@ -40,14 +39,16 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController(text: '18922851675');
   final _passwordController = TextEditingController(text: '123456');
+  final _confirmPasswordController = TextEditingController(text: '123456');
 
-  String _phone, _password;
+  String _phone, _password, _confirmPassword;
   bool _validate = false, _isCommitButtonEnable = false;
 
   @override
   void initState() {
     _phoneController.addListener(_commitButtonState);
     _passwordController.addListener(_commitButtonState);
+    _confirmPasswordController.addListener(_commitButtonState);
     super.initState();
   }
 
@@ -55,6 +56,7 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
   void dispose() {
     _phoneController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -76,14 +78,14 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
           autovalidate: _validate,
           child: Column(
             children: <Widget>[
-              _textFormField('Phone Number', 'Enter your phone number',
-                  TextInputType.phone, false),
+              _textFormField(
+                  'User Name', 'Enter your account', TextInputType.phone, 0),
               SizedBox(height: 20.0),
               _textFormField(
-                  'Password', 'Enter your password', TextInputType.text, true),
+                  'Password', 'Enter your password', TextInputType.text, 1),
               SizedBox(height: 20.0),
               _textFormField('Confirm Password', 'Enter your password again',
-                  TextInputType.text, true),
+                  TextInputType.text, 2),
               SizedBox(height: 60.0),
               _commitButton(),
             ],
@@ -93,8 +95,8 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
     );
   }
 
-  TextFormField _textFormField(String hintText, String labelText,
-      TextInputType inputType, bool isPassword) {
+  TextFormField _textFormField(
+      String hintText, String labelText, TextInputType inputType, int type) {
     return TextFormField(
       decoration: InputDecoration(
         fillColor: Colors.green,
@@ -107,22 +109,24 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
         ),
       ),
       keyboardType: inputType,
-      obscureText: isPassword,
+      obscureText: type == 0 ? false : true,
       style: TextStyle(
         fontSize: 18.0,
         color: Colors.white,
       ),
       maxLines: 1,
       textInputAction: TextInputAction.next,
-      validator: isPassword ? _validPassword : _validPhone,
+      validator: type == 0 ? _validPhone : _validPassword,
       onSaved: (String value) {
-        if (isPassword) {
+        if (type == 0) {
+          _phone = value;
+        } else if (type == 1) {
           _password = value;
         } else {
-          _phone = value;
+          _confirmPassword = value;
         }
       },
-      controller: isPassword ? _passwordController : _phoneController,
+      controller: _detectController(type),
     );
   }
 
@@ -134,7 +138,7 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         disabledColor: Colors.grey[400],
-        textColor: Colors.white70,
+        textColor: Colors.white,
         disabledTextColor: Colors.white70,
         padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
         child: Text(
@@ -144,6 +148,16 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
         onPressed: _isCommitButtonEnable ? _validParams : null,
       ),
     );
+  }
+
+  TextEditingController _detectController(int type) {
+    if (type == 0) {
+      return _phoneController;
+    } else if (type == 1) {
+      return _passwordController;
+    } else {
+      return _confirmPasswordController;
+    }
   }
 
   void _validParams() {
@@ -179,6 +193,7 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
   void _commitButtonState() {
     setState(() {
       _isCommitButtonEnable = _phoneController.text.length > 0 &&
+          _passwordController.text.length > 0 &&
           _passwordController.text.length > 0;
     });
   }

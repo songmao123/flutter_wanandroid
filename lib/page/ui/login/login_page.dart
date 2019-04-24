@@ -2,8 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_wanandroid/page/login/register_page.dart';
-import 'package:flutter_wanandroid/page/splash/splash_page.dart';
+import 'package:flutter_wanandroid/page/dialog/dialog.dart';
+import 'package:flutter_wanandroid/page/entity/data_model.dart';
+import 'package:flutter_wanandroid/page/http/http_utils.dart';
+import 'package:flutter_wanandroid/page/ui/home/main_page.dart';
+import 'package:flutter_wanandroid/page/ui/login/register_page.dart';
+import 'package:flutter_wanandroid/page/ui/splash/splash_page.dart';
+import 'package:flutter_wanandroid/page/utils/url_utils.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,7 +119,6 @@ class _LoginBackgroundState extends State<LoginBackgroundWidget> {
 }
 
 class LoginPage extends AbstractLoginPage {
-
   @override
   Widget buildContent(BuildContext context) {
     return Column(
@@ -185,8 +189,8 @@ class LoginAreaWidget extends StatefulWidget {
 
 class LoginAreaState extends State<LoginAreaWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController(text: '18922851675');
-  final _passwordController = TextEditingController(text: '123456');
+  final _phoneController = TextEditingController(text: 'songmao');
+  final _passwordController = TextEditingController(text: '123456789');
 
   String _phone, _password;
   bool _validate = false, _isCommitButtonEnable = false;
@@ -223,8 +227,8 @@ class LoginAreaState extends State<LoginAreaWidget> {
           autovalidate: _validate,
           child: Column(
             children: <Widget>[
-              _textFormField('Phone Number', 'Enter your phone number',
-                  TextInputType.phone, false),
+              _textFormField(
+                  'User Name', 'Enter your account', TextInputType.text, false),
               SizedBox(height: 20.0),
               _textFormField(
                   'Password', 'Enter your password', TextInputType.text, true),
@@ -298,7 +302,7 @@ class LoginAreaState extends State<LoginAreaWidget> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         disabledColor: Colors.grey[400],
-        textColor: Colors.white70,
+        textColor: Colors.white,
         disabledTextColor: Colors.white70,
         padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
         child: Text(
@@ -313,12 +317,28 @@ class LoginAreaState extends State<LoginAreaWidget> {
   void _validParams() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-//      Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//          builder: (context) {},
-//        ),
-//      );
+      showLoadingDialog(context, "Logining...");
+      var response = HttpUtils.post(
+          UrlConstant.LOGIN_URL, {"username": _phone, "password": _password});
+      response.then((value) {
+        var model = LoginModel.fromJson(value);
+        print("Message: ${model.errorMsg}, Code: ${model.errorCode}");
+        Navigator.of(context).pop();
+        int code = value['errorCode'];
+        if (code == 0) {
+          Fluttertoast.showToast(
+              msg: "校验正确: ${model.data.username}",
+              toastLength: Toast.LENGTH_SHORT);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainPage(),
+              ));
+        } else {
+          Fluttertoast.showToast(
+              msg: value['errorMsg'], toastLength: Toast.LENGTH_SHORT);
+        }
+      });
     } else {
       setState(() {
         _validate = true;
@@ -327,8 +347,8 @@ class LoginAreaState extends State<LoginAreaWidget> {
   }
 
   String _validPhone(String value) {
-    if (value.length != 11) {
-      return 'Password input valid phone number.';
+    if (value.length < 0) {
+      return 'Please input your user name.';
     }
     return null;
   }

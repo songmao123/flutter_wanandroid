@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/page/login/login_page.dart';
+import 'package:flutter_wanandroid/page/ui/login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const int COUNTDOWN_TIME = 3;
