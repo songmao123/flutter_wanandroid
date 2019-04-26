@@ -63,7 +63,7 @@ class _ListRefreshState extends State<ListRefresh> {
       //if(_hasMore){ // 还有数据可以拉新
       List newEntries = await mokeHttpRequest();
       //if (newEntries.isEmpty) {
-      _hasMore = (_pageIndex <= _pageTotal);
+      _hasMore = (_pageTotal <= 20);
       if (this.mounted) {
         setState(() {
           items.addAll(newEntries);
@@ -99,6 +99,7 @@ class _ListRefreshState extends State<ListRefresh> {
   * 其实就是列表重置
   * */
   Future<Null> _handleRefresh() async {
+    _pageIndex = 0;
     List newEntries = await mokeHttpRequest();
     if (this.mounted) {
       setState(() {
@@ -117,11 +118,11 @@ class _ListRefreshState extends State<ListRefresh> {
   Widget _buildLoadText() {
     return Container(
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Center(
-            child: Text("数据没有更多了！！！"),
-          ),
-        ));
+      padding: const EdgeInsets.all(18.0),
+      child: Center(
+        child: Text("数据没有更多了！！！"),
+      ),
+    ));
   }
 
   /*
@@ -130,23 +131,28 @@ class _ListRefreshState extends State<ListRefresh> {
   Widget _buildProgressIndicator() {
     if (_hasMore) {
       return new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new Center(
-            child: Column(
-              children: <Widget>[
-                new Opacity(
-                  opacity: isLoading ? 1.0 : 0.0,
-                  child: new CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.blue)),
-                ),
-                SizedBox(height: 20.0),
-                Text(
-                  '稍等片刻更精彩...',
-                  style: TextStyle(fontSize: 14.0),
-                )
-              ],
+        padding: const EdgeInsets.only(
+            left: 8.0, right: 8.0, top: 8.0, bottom: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Opacity(
+              opacity: isLoading ? 1.0 : 0.0,
+              child: SizedBox(
+                width: 20.0,
+                height: 20.0,
+                child: new CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    valueColor: AlwaysStoppedAnimation(Colors.teal)),
+              ),
+            ),
+            SizedBox(width: 10.0),
+            Text(
+              '稍等片刻更精彩...',
+              style: TextStyle(fontSize: 14.0),
             )
-          //child:
+          ],
         ),
       );
     } else {
@@ -163,6 +169,7 @@ class _ListRefreshState extends State<ListRefresh> {
   @override
   Widget build(BuildContext context) {
     return new RefreshIndicator(
+      color: Colors.teal,
       child: ListView.builder(
         itemCount: items.length + 1,
         itemBuilder: (context, i) {

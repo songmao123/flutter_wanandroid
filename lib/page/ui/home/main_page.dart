@@ -75,28 +75,28 @@ class _MainPageState extends State<MainPage>
             items: [
               BottomNavigationBarItem(
                   icon: Icon(Icons.home,
-                      color: _selectedTab == 0 ? Colors.white : Colors.white30),
+                      color: _selectedTab == 0 ? Colors.white : Colors.white70),
                   title: Text("首页",
                       style: TextStyle(
                           color: _selectedTab == 0
                               ? Colors.white
-                              : Colors.white30))),
+                              : Colors.white70))),
               BottomNavigationBarItem(
                   icon: Icon(Icons.folder_shared,
-                      color: _selectedTab == 1 ? Colors.white : Colors.white30),
+                      color: _selectedTab == 1 ? Colors.white : Colors.white70),
                   title: Text("项目",
                       style: TextStyle(
                           color: _selectedTab == 1
                               ? Colors.white
-                              : Colors.white30))),
+                              : Colors.white70))),
               BottomNavigationBarItem(
                   icon: Icon(Icons.settings,
-                      color: _selectedTab == 2 ? Colors.white : Colors.white30),
+                      color: _selectedTab == 2 ? Colors.white : Colors.white70),
                   title: Text("设置",
                       style: TextStyle(
                           color: _selectedTab == 2
                               ? Colors.white
-                              : Colors.white30)))
+                              : Colors.white70)))
             ]),
       ),
     );

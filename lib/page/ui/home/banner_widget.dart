@@ -37,7 +37,8 @@ class BannerWidgetState extends State<BannerWidget>
     startLoop();
 
     _getImage(widget.bannerList[0].imagePath).then((value) {
-      double height = (screenWidth - 16.0) * value.height / value.width + 16.0;
+      double height =
+          (screenWidth - 16.0 * 2) * value.height / value.width + 24.0;
       print('Image height: $height, Screen width: $screenWidth');
       setState(() {
         bannerHeight = height;
@@ -104,18 +105,25 @@ class BannerWidgetState extends State<BannerWidget>
       onPageChanged: _pageChanged,
       physics: BouncingScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
-        return InkWell(
-            onTap: () {},
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5.0),
+        return Padding(
+          padding:
+              EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 8.0),
+          child: Material(
+            elevation: 3.0,
+            color: Colors.transparent,
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5.0),
+              child: InkWell(
+                onTap: () {},
                 child: Image.network(
                   widget.bannerList[index % widget.bannerList.length].imagePath,
                   fit: BoxFit.cover,
                 ),
               ),
-            ));
+            ),
+          ),
+        );
       },
     );
   }
