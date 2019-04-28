@@ -37,7 +37,10 @@ class _WebViewPageState extends State<WebViewPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               }),
-          title: Text(defaultTitle),
+          title: Text(
+            defaultTitle,
+            style: TextStyle(fontFamily: "Montserrat-Medium"),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(
