@@ -101,19 +101,18 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
       decoration: InputDecoration(
         fillColor: Colors.green,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white70),
+        hintStyle:
+            TextStyle(color: Colors.white70, fontFamily: "Montserrat-Medium"),
         labelText: labelText,
         labelStyle: TextStyle(
-          fontSize: 16.0,
-          color: Colors.white70,
-        ),
+            fontSize: 16.0,
+            color: Colors.white70,
+            fontFamily: "Montserrat-Medium"),
       ),
       keyboardType: inputType,
       obscureText: type == 0 ? false : true,
       style: TextStyle(
-        fontSize: 18.0,
-        color: Colors.white,
-      ),
+          fontSize: 18.0, color: Colors.white, fontFamily: "Montserrat-Medium"),
       maxLines: 1,
       textInputAction: TextInputAction.next,
       validator: type == 0 ? _validPhone : _validPassword,
@@ -143,7 +142,7 @@ class RegisterAreaState extends State<RegisterAreaWidget> {
         padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
         child: Text(
           'Register',
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 16.0, fontFamily: "Montserrat-Bold"),
         ),
         onPressed: _isCommitButtonEnable ? _validParams : null,
       ),

@@ -25,7 +25,7 @@ void showLoadingDialog(BuildContext context, String loadingText) {
                 ),
                 Text(
                   loadingText,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontFamily: "Montserrat-Medium"),
                 ),
                 SizedBox(
                   height: 10.0,

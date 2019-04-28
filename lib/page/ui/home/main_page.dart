@@ -28,7 +28,10 @@ class _MainPageState extends State<MainPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.titles[_selectedTab]),
+        title: Text(
+          Constants.titles[_selectedTab],
+          style: TextStyle(fontFamily: "Montserrat-Bold"),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -76,24 +79,27 @@ class _MainPageState extends State<MainPage>
               BottomNavigationBarItem(
                   icon: Icon(Icons.home,
                       color: _selectedTab == 0 ? Colors.white : Colors.white70),
-                  title: Text("首页",
+                  title: Text("Home",
                       style: TextStyle(
+                          fontFamily: "Montserrat-Bold",
                           color: _selectedTab == 0
                               ? Colors.white
                               : Colors.white70))),
               BottomNavigationBarItem(
                   icon: Icon(Icons.folder_shared,
                       color: _selectedTab == 1 ? Colors.white : Colors.white70),
-                  title: Text("项目",
+                  title: Text("Project",
                       style: TextStyle(
+                          fontFamily: "Montserrat-Bold",
                           color: _selectedTab == 1
                               ? Colors.white
                               : Colors.white70))),
               BottomNavigationBarItem(
                   icon: Icon(Icons.settings,
                       color: _selectedTab == 2 ? Colors.white : Colors.white70),
-                  title: Text("设置",
+                  title: Text("Settings",
                       style: TextStyle(
+                          fontFamily: "Montserrat-Bold",
                           color: _selectedTab == 2
                               ? Colors.white
                               : Colors.white70)))
@@ -116,8 +122,8 @@ class _MainPageState extends State<MainPage>
         physics: const NeverScrollableScrollPhysics(),
         children: [
           HomePage(),
-          Center(child: Text("项目", style: TextStyle(fontSize: 20.0))),
-          Center(child: Text("设置", style: TextStyle(fontSize: 20.0))),
+          Center(child: Text("Home", style: TextStyle(fontSize: 20.0))),
+          Center(child: Text("Setting", style: TextStyle(fontSize: 20.0))),
         ],
       ),
     );

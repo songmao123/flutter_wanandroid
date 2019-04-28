@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 Widget circleTextWidget(String text) {
   // print("Letter: $text");
-  return Container(
-    width: 18.0,
-    height: 18.0,
-    alignment: Alignment(0.0, 0.0),
-    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.teal[400]),
+  return CircleAvatar(
+    radius: 8.0,
+    foregroundColor: Colors.white,
+    backgroundColor: Colors.teal,
     child: Text(
       text,
-      style: TextStyle(fontSize: 10.0, color: Colors.white),
+      style: TextStyle(
+          color: Colors.white, fontFamily: "Montserrat-Bold", fontSize: 10.0),
     ),
   );
 }
@@ -24,7 +24,11 @@ Widget chapterWidget(String chapter) {
         color: Colors.teal[400]),
     child: Text(
       "$chapter",
-      style: TextStyle(color: Colors.white, fontSize: 12.0),
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12.0,
+        fontWeight: FontWeight.bold,
+      ),
     ),
   );
 }

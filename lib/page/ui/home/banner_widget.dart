@@ -23,7 +23,8 @@ class BannerWidgetState extends State<BannerWidget>
   Timer _timer;
   double screenWidth;
   int _currentIndex = 0;
-  double bannerHeight = 180.0;
+  double bannerHeight;
+  bool isImageLoaded = false;
   PageController _pageController;
 
   @override
@@ -87,12 +88,44 @@ class BannerWidgetState extends State<BannerWidget>
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    return bannerHeight == 0
+        ? defaultImage()
+        : Container(
+            height: bannerHeight,
+            child: Stack(
+              children: <Widget>[
+                viewPagerWidget(),
+                indicatorWidget(),
+              ],
+            ),
+          );
+  }
+
+  Widget defaultImage() {
     return Container(
-      height: bannerHeight,
+      margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 8.0),
+      alignment: Alignment.center,
+      height: 200.0,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0),
+          ),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: const Color(0xFFd0d0d0),
+              blurRadius: 3.0,
+              spreadRadius: 0.5,
+              offset: Offset(1.0, 0),
+            ),
+          ]),
       child: Stack(
         children: <Widget>[
-          viewPagerWidget(),
-          indicatorWidget(),
+          Icon(
+            Icons.image,
+            size: 50.0,
+            color: Colors.black38,
+          ),
         ],
       ),
     );

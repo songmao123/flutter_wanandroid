@@ -172,6 +172,7 @@ class _ListRefreshState extends State<ListRefresh> {
       color: Colors.teal,
       child: ListView.builder(
         itemCount: items.length + 1,
+        /*physics: BouncingScrollPhysics(),*/
         itemBuilder: (context, i) {
           if (i == 0 /*&& index != items.length*/) {
             if (widget.headerView != null) {

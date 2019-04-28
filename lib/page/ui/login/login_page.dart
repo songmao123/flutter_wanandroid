@@ -168,7 +168,10 @@ class LoginPage extends AbstractLoginPage {
             ),
             child: Text(
               'Not account yet? Create one',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Montserrat-Medium",
+              ),
             ),
           ),
         ),
@@ -248,19 +251,18 @@ class LoginAreaState extends State<LoginAreaWidget> {
       decoration: InputDecoration(
         fillColor: Colors.green,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white70),
+        hintStyle:
+            TextStyle(color: Colors.white70, fontFamily: "Montserrat-Medium"),
         labelText: labelText,
         labelStyle: TextStyle(
-          fontSize: 16.0,
-          color: Colors.white70,
-        ),
+            fontSize: 16.0,
+            color: Colors.white70,
+            fontFamily: "Montserrat-Medium"),
       ),
       keyboardType: inputType,
       obscureText: isPassword,
       style: TextStyle(
-        fontSize: 18.0,
-        color: Colors.white,
-      ),
+          fontSize: 18.0, color: Colors.white, fontFamily: "Montserrat-Medium"),
       maxLines: 1,
       textInputAction: TextInputAction.next,
       validator: isPassword ? _validPassword : _validPhone,
@@ -286,10 +288,9 @@ class LoginAreaState extends State<LoginAreaWidget> {
         highlightColor: Colors.black12,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-        child: Text(
-          'Forget password?',
-          style: TextStyle(color: Colors.white),
-        ),
+        child: Text('Forget password?',
+            style: TextStyle(
+                color: Colors.white, fontFamily: "Montserrat-Medium")),
       ),
     );
   }
@@ -307,7 +308,7 @@ class LoginAreaState extends State<LoginAreaWidget> {
         padding: EdgeInsets.only(top: 14.0, bottom: 14.0),
         child: Text(
           'Login',
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 16.0, fontFamily: "Montserrat-Bold"),
         ),
         onPressed: _isCommitButtonEnable ? _validParams : null,
       ),
