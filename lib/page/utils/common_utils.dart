@@ -22,4 +22,11 @@ class CommonUtils {
     }
     return "";
   }
+
+  static bool isStringEmpty(String text) {
+    if (text == null || text == "" || text.trim() == "") {
+      return true;
+    }
+    return false;
+  }
 }

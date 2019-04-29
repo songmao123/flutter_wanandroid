@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ListRefresh extends StatefulWidget {
   final renderItem;
   final requestApi;
-  final Widget headerView;
+  final headerView;
 
   const ListRefresh([this.requestApi, this.renderItem, this.headerView])
       : super();
@@ -18,7 +18,8 @@ class _ListRefreshState extends State<ListRefresh> {
   bool isLoading = false; // 是否正在请求数据中
   bool _hasMore = true; // 是否还有更多数据可加载
   int _pageIndex = 0; // 页面的索引
-  int _pageTotal = 0; // 页面的索引
+  int _pageSize = 0; // 页面的索引
+  int _totalCount = 0;
   List items = new List();
   ScrollController _scrollController = new ScrollController();
 
@@ -63,7 +64,7 @@ class _ListRefreshState extends State<ListRefresh> {
       //if(_hasMore){ // 还有数据可以拉新
       List newEntries = await mokeHttpRequest();
       //if (newEntries.isEmpty) {
-      _hasMore = (_pageTotal <= 20);
+      _hasMore = (_pageSize <= 20);
       if (this.mounted) {
         setState(() {
           items.addAll(newEntries);
@@ -85,7 +86,8 @@ class _ListRefreshState extends State<ListRefresh> {
     if (widget.requestApi is Function) {
       final listObj = await widget.requestApi({'pageIndex': _pageIndex});
       _pageIndex = listObj['pageIndex'];
-      _pageTotal = listObj['total'];
+      _pageSize = listObj['page_size'];
+      _totalCount  = listObj['total'];
       return listObj['list'];
     } else {
       return Future.delayed(Duration(seconds: 2), () {
@@ -171,20 +173,20 @@ class _ListRefreshState extends State<ListRefresh> {
     return new RefreshIndicator(
       color: Colors.teal,
       child: ListView.builder(
-        itemCount: items.length + 1,
+        itemCount: items.length + 2,
         /*physics: BouncingScrollPhysics(),*/
         itemBuilder: (context, i) {
           if (i == 0 /*&& index != items.length*/) {
             if (widget.headerView != null) {
-              return widget.headerView;
+              return widget.headerView(_totalCount);
             } else {
               return Container(height: 0);
             }
-          } else if (i == items.length) {
+          } else if (i == items.length + 1) {
             return _buildProgressIndicator();
           } else {
             if (widget.renderItem is Function) {
-              return widget.renderItem(i, items[i]);
+              return widget.renderItem(i, items[i - 1]);
             }
           }
         },

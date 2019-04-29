@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Expanded(child: ListRefresh(getIndexListData, buildCard, headerView()))
+        Expanded(child: ListRefresh(getIndexListData, buildCard, headerView))
       ],
     );
   }
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     }
     Map<String, dynamic> result = {
       "list": resultList,
-      'total': resultList.length,
+      'page_size': resultList.length,
       'pageIndex': pageIndex
     };
     return result;
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget headerView() {
+  Widget headerView(int count) {
     return FutureBuilder<BannerData>(
       future: fetchBanner(),
       builder: (context, snapshot) {

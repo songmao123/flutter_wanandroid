@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/page/ui/home/home_page.dart';
+import 'package:flutter_wanandroid/page/ui/search/search_page.dart';
 import 'package:flutter_wanandroid/page/utils/constant.dart';
 
 class MainPage extends StatefulWidget {
@@ -38,7 +39,14 @@ class _MainPageState extends State<MainPage>
               Icons.search,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchPage(),
+                ),
+              );
+            },
           ),
           SizedBox(
             width: 10.0,
