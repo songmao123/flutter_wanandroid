@@ -27,6 +27,7 @@ class _ListRefreshState extends State<ListRefresh> {
   void initState() {
     super.initState();
     _getMoreData();
+    print("-------------------------------------------------------------------------------->ListRefresh initState");
     _scrollController.addListener(() {
       // 如果下拉的当前位置到scroll的最下面
       if (_scrollController.position.pixels ==

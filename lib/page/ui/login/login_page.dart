@@ -327,9 +327,6 @@ class LoginAreaState extends State<LoginAreaWidget> {
         Navigator.of(context).pop();
         int code = value['errorCode'];
         if (code == 0) {
-          Fluttertoast.showToast(
-              msg: "校验正确: ${model.data.username}",
-              toastLength: Toast.LENGTH_SHORT);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

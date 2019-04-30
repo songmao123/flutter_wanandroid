@@ -4,6 +4,7 @@ import 'package:flutter_wanandroid/page/entity/entity.dart';
 import 'package:flutter_wanandroid/page/entity/hot_search.dart';
 import 'package:flutter_wanandroid/page/http/http_utils.dart';
 import 'package:flutter_wanandroid/page/ui/home/list_refresh.dart';
+import 'package:flutter_wanandroid/page/ui/web/webview_page.dart';
 import 'package:flutter_wanandroid/page/utils/common_utils.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:html/dom.dart' as dom;
@@ -61,7 +62,11 @@ class _SearchPageState extends State<SearchPage> {
         title: TextField(
           controller: _queryTextController,
           textInputAction: TextInputAction.search,
-          onSubmitted: (String _) {},
+          onSubmitted: (String _) {
+            setState(() {});
+            print(
+                "Text changed: -------------------------------------------> ${_queryTextController.text}");
+          },
           style: TextStyle(
             color: Colors.white,
             fontSize: 18.0,
@@ -89,7 +94,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {});
     });
     print(
-        "Text changed: -------------------------------------------> ${_queryTextController.text}");
+        "Text changed: ------------------------> ${_queryTextController.text}");
   }
 
   Widget _buildSuggestions() {
@@ -205,7 +210,13 @@ class _SearchPageState extends State<SearchPage> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WebViewPage(item.title, item.link),
+            ),
+          );
+        },
         child: Column(
           children: <Widget>[
             Stack(
@@ -213,7 +224,11 @@ class _SearchPageState extends State<SearchPage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 16.0, top: 16.0, bottom: 16.0, right: 60.0),
+                    left: 16.0,
+                    top: 16.0,
+                    bottom: 16.0,
+                    right: 60.0,
+                  ),
                   child: Column(
                     children: <Widget>[
                       Html(
@@ -229,7 +244,9 @@ class _SearchPageState extends State<SearchPage> {
                                 case "em":
                                   return Text(
                                     node.text,
-                                    style: TextStyle(color: Colors.teal),
+                                    style: TextStyle(
+                                        color: Colors.teal,
+                                        fontFamily: "Montserrat-Bold"),
                                   );
                               }
                             }
